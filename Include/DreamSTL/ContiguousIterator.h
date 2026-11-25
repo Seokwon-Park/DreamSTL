@@ -6,7 +6,7 @@
 
 #include "Core.h"
 
-namespace Dream
+namespace DreamSTL
 {
 	template<typename T>
 	class ContiguousIterator
@@ -22,12 +22,12 @@ namespace Dream
 
 	public:
 		ContiguousIterator() noexcept = default;
-		explicit ContiguousIterator(pointer _ptr) noexcept;
+		explicit ContiguousIterator(pointer _ptr) noexcept :ptr(_ptr) {}
 
 		// Iterator -> ConstIterator 변환만 허용
 		template<typename U>
 			requires std::is_same_v<const U, T>
-		ContiguousIterator(const ContiguousIterator<U>& _other) noexcept;
+		ContiguousIterator(const ContiguousIterator<U>& _other) noexcept : ptr(_other.Get()) {}
 
 		ContiguousIterator(const ContiguousIterator&) noexcept = default;
 		ContiguousIterator& operator=(const ContiguousIterator&) noexcept = default;
@@ -68,12 +68,14 @@ namespace Dream
 		[[nodiscard]] std::strong_ordering operator<=>(const ContiguousIterator<U>& _other) const noexcept;
 
 		// 내부 포인터
-		[[nodiscard]] pointer Get() const noexcept;
+		[[nodiscard]] pointer Get() const noexcept { return ptr; }
 
 	private:
-		pointer m_ptr = nullptr;
+		pointer ptr = nullptr;
 	};
 
 	static_assert(std::contiguous_iterator<ContiguousIterator<int>>);
 	static_assert(std::contiguous_iterator<ContiguousIterator<const int>>);
 }
+
+#include "ContiguousIterator.inl"

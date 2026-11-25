@@ -13,6 +13,7 @@
 
 int main()
 {
+	
 	DreamSTL::Array<int> arr;
 	arr.Add(1);
 	arr.Add(2);
